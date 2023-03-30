@@ -1,0 +1,7 @@
+.popup__wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+}

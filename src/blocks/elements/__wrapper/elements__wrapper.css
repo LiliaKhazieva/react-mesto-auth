@@ -1,0 +1,8 @@
+.elements__wrapper {
+  border-radius: 0 0 10px 10px;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 20px 26px 21px;
+}

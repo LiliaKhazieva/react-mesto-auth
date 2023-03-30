@@ -1,0 +1,10 @@
+.header__link:hover {
+  opacity: 0.5;
+  transition: 2ms;
+}
+
+@media screen and (max-width: 940px){
+  .header__link {
+    padding-left: 27px;
+  }
+}

@@ -1,0 +1,26 @@
+.elements__like-button {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  background-image: url("../../../images/hearz.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 22px;
+  height: 19px;
+}
+
+.elements__like-button:hover {
+  opacity: 0.5;
+  transition: 2ms;
+}
+
+.elements__like-button_active {
+  background-image: url("../../../images/black-hearz.svg");
+}
+
+.elements__like-button_active:hover {
+  opacity: 1;
+}

@@ -1,0 +1,15 @@
+.page__content {
+  box-sizing: border-box;
+  max-width: 918px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 19px 67px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 568px){
+  .page__content {
+    padding: 38px 19px 48px;
+  }
+}
