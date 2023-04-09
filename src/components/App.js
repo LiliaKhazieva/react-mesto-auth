@@ -30,7 +30,7 @@ function App() {
   const [popupText, setPopupTitle] = React.useState("");
   const [imagePopup, setImage] = React.useState("");
 
-  const [currentUser, setCurrentUser] = React.useState({ name: '', about: ''});
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
   // стейт карточки
@@ -40,6 +40,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState(null);
   const [isAppLoading, setIsAppLoading] = React.useState(false);
+  const [isPopupLoading, setPopupLoading] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -86,11 +87,11 @@ function App() {
     }
   }, [navigate]);
 
-  // Карточки
+  // Карточки и данные пользователя
   React.useEffect(() => {
     api.getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
+      .then((user) => {
+        setCurrentUser(user);
       })
       .catch((err) => {
         console.log(err);
@@ -163,29 +164,38 @@ function App() {
       });
   }
 
-  function handleUpdateUser({ name, about }) {
-    api.saveUserInfo({ name, about })
-      .then((userData) => {
-        setCurrentUser(userData)
+  function handleUpdateUser(userData) {
+    setPopupLoading(true);
+    api.saveUserInfo(userData)
+      .then((user) => {
+        setCurrentUser(user)
         closeAllPopups()
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => {
+        setPopupLoading(false);
+      })
   }
 
-  function handleUpdateAvatar(link) {
-    api.saveUserAvatar(link.avatar)
+  function handleUpdateAvatar(avatar) {
+    setPopupLoading(true);
+    api.saveUserAvatar(avatar)
       .then((userData) => {
-        setCurrentUser(userData)
+        setCurrentUser({...currentUser, avatar: userData.avatar})
         closeAllPopups()
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setPopupLoading(false);
       })
   }
 
   function handleAddPlaceSubmit({ name, link }) {
+    setPopupLoading(true);
     api.addNewCard({ name, link })
       .then((newCard) => {
         setCards([newCard, ...cards]);
@@ -193,7 +203,10 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => {
+      setPopupLoading(false);
+    })
   }
 
   function handleSignOut() {
@@ -246,22 +259,26 @@ function App() {
               <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"}/>} />
             </Routes>
             <EditAvatarPopup
+              isLoading={isPopupLoading}
               isOpen={isOpenPopupAvatarEdit}
               onClose={closeAllPopups}
               onUpdateAvatar={handleUpdateAvatar}
             ></EditAvatarPopup>
             <EditProfilePopup
+              isLoading={isPopupLoading}
               isOpen={isOpenPopupProfile}
               onClose={closeAllPopups}
               onUpdateUser={handleUpdateUser}
             ></EditProfilePopup>
             <AddPlacePopup
+              isLoading={isPopupLoading}
               isOpen={isOpenPopupAdd}
               onClose={closeAllPopups}
               onUpdateNewCard={handleAddPlaceSubmit}
             >
             </AddPlacePopup>
             <ImagePopup
+              isLoading={isPopupLoading}
               isOpen={isOpenImagePopup}
               card={selectedCard}
               onClose={closeAllPopups}
